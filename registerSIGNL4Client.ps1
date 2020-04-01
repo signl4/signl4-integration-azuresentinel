@@ -19,6 +19,9 @@ $subscriptions | Format-Table -Property SubscriptionId,Name,State,TenantId
 
 $subIndex = Read-Host -Prompt "Please enter row number of subscription to use (starting from 1)"
 
+# Sets the tenant, subscription, and environment for cmdlets to use in the current session
+Set-AzContext -SubscriptionId $subscriptions[$subIndex-1].SubscriptionId
+
 
 $s4config.SubscriptionId = $subscriptions[$subIndex-1].SubscriptionId
 $s4config.TenantId = $subscriptions[$subIndex-1].TenantId
@@ -68,8 +71,8 @@ $role.AssignableScopes.Add($subScope)
 Write-Output "Creating new role in Azure, which may take some seconds..."
 New-AzRoleDefinition -Role $role
 
-Start-Sleep -s 20
-
+# Sleep a little while and wait until the new role is completely populated and available in Azure. Otherwise consider adding the role assignment manually in Azure Portal. The SPN shows up for assignement..
+Start-Sleep -s 30
 
 # Assign SPN to that role
 Write-Output "Role created in Azure, adding SPN to that role..."
