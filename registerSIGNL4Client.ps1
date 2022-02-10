@@ -64,6 +64,8 @@ Start-Sleep -s 60 # Needed as it is otherwise not usable due to Azure APIU laten
 # Add an app password
 Write-Output "Adding a password to the SIGNL4 Application in Azure AD.."
 $spnPwd = New-Guid
+New-AzureADApplicationPasswordCredential -ObjectId $app.ObjectId -Value $spnPwd
+
 
 # Add required app API permissions for GraphAPI SecurityEvents/Alerts
 Write-Output "Adding required app API permissions for GraphAPI SecurityEvents/Alerts.." 
